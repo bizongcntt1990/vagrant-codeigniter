@@ -1,0 +1,27 @@
+<div id="box_entry">
+<h2>Infomation your account</h2>
+    <ul>
+        <li>Username : <?php echo $info['username'];?></li>
+        <li>Full name : <?php echo $info['name'];?></li>
+        <li>Email : <?php echo $info['email'];?></li>
+        <li>Address : <?php echo $info['address'];?></li>
+        <li>Phone : <?php echo $info['phone'];?></li>
+        <li>Type : <?php if ($info['type']=="01000"){
+                              			echo 'Admin';
+                              		}else if ($info['type']=="00100"){
+                              			echo 'Make test';
+                              		}else if ($info['type']=="00010"){
+                              			echo 'Examiner';
+                              		}else if ($info['type']=="00001"){
+                              			echo 'Examinee';
+                              		}
+                     ?></li>
+        <li>Birthday : <?php echo $info['birthday']; ?></li> 
+<<<<<<< .mine
+        <li><a href="<?php echo base_url()."admin/user/edit_profile/".$info['user_id'];?>" >Update your account</a></li> 
+=======
+        <li><a href="<?php echo base_url()."admin/user/editProfile/".$info['user_id'];?>" >Update your account</a></li> 
+>>>>>>> .r162
+        <li><a href="<?php echo base_url()."home/verify/logout";?>" >Sign out</a></li>                                   
+    </ul>
+</div>

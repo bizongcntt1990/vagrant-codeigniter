@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/61/trunk/application/database
+END
+auto_test 18032013 v2.sql
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/114/trunk/application/database/auto_test%2018032013%20v2.sql
+END
+auto_test 14032013 v cuoi 17h43.sql
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/61/trunk/application/database/auto_test%2014032013%20v%20cuoi%2017h43.sql
+END
+auto_test 14032013 v03.sql
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/48/trunk/application/database/auto_test%2014032013%20v03.sql
+END
+auto_test _18032013 v1.sql
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/108/trunk/application/database/auto_test%20_18032013%20v1.sql
+END

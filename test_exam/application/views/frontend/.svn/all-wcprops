@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/28/trunk/application/views/frontend
+END
+template.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/209/trunk/application/views/frontend/template.php
+END
+report.php
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/23/trunk/application/views/frontend/report.php
+END
+fg_password.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/227/trunk/application/views/frontend/fg_password.php
+END
+login.php
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/227/trunk/application/views/frontend/login.php
+END

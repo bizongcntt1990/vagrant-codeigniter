@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/28/trunk/application/views/frontend/user
+END
+register_complete.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/23/trunk/application/views/frontend/user/register_complete.php
+END
+edit_view.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/240/trunk/application/views/frontend/user/edit_view.php
+END
+home_view.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/200/trunk/application/views/frontend/user/home_view.php
+END
+register.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/240/trunk/application/views/frontend/user/register.php
+END

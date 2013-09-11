@@ -1,0 +1,71 @@
+﻿TestTitle,２０１２年１０月１２日　テスト問題サンプル・固定
+TestSubTitle,日本語テスト第３週,
+StartDateTime,2012,10,12,7,35,0
+TestTime,10,m
+TestType,Fix
+Testees,Name:,AS1-権代,ID:,HUST20083562,PW:,llasjdkjas001
+Testees,Name:,AS2-コン,ID:,HUST20083563,PW:,llasjdkjas001
+/*Testees,Name:,AS1-ゴック,ID:,HUST20083564,PW:,llasjdkjas001,,*/
+Testees,Name:,AS1-ゴック,ID:,HUST20083565,PW:,llasjdkjas001
+Testees,Name:,AS3-Ly,ID:,HUST20083566,PW:,llasjdkjas001
+
+
+
+
+#,コメント
+Q(1),QS,Meeting をカタカナで表記しなさい。
+Q(1),S(1),ミーティング,,,/*** 正解 ***/
+Q(1),S(2),メーティング
+Q(1),S(3),ミッティング
+Q(1),S(4),メティング
+Q(1),S(5),ミティング
+Q(1),S(6),ミーチング
+Q(1),LM,TRI,1,m
+Q(1),AN(1),KS,S(1)
+Q(1),SC(1),AN(1),10
+
+Q(2),QS,computer をカタカナで表記しなさい。
+Q(2),S(1),コムピュータ
+Q(2),S(2),コムピューター
+Q(2),S(3),コンプータ
+Q(2),S(4),コンピューター,,,/*** 正解 ***/
+Q(2),S(5),コンピュータ,,,/*** 正解 ***/
+Q(2),S(6),コムピューター
+Q(2),LM,REC,1,m
+Q(2),AN(1),KSO,S(4),S(5)
+Q(2),SC(1),AN(1),10
+
+Q(3),QW,「重複」をひらがなで解答欄に表記しなさい。
+Q(3),WR(1),20
+Q(3),AN(1),KW,じゅうふく
+Q(3),AN(2),KW,ちょうふく
+Q(3),LM,TRAP,30,s,1,m
+Q(3),SC(1),AN(1),10
+Q(3),SC(2),AN(2),20
+
+Q(4),QS,以下の説明で適切だと思われるものを全て選択しなさい。
+Q(4),S(1),昆虫は６本足である。
+Q(4),S(2),爬虫類は４本足である。
+Q(4),S(3),節足類は偶数本足である。
+Q(4),S(4),哺乳類は２本足である。
+Q(4),S(5),鳥類は４本足である。
+Q(4),S(6),男性は３本足である。
+Q(4),S(7),単細胞生物には足が無い。
+Q(4),TM,3,m
+Q(4),AN(1),KW,S(1)
+Q(4),AN(2),KW,S(3)
+Q(4),AN(3),KWA,S(1),S(3)
+Q(4),AN(4),KWO,S(2),S(4),S(5),S(6),S(7)
+Q(4),ANC,AN(1),AN(2)
+Q(4),SC(1),AN(1),5
+Q(4),SC(2),AN(2),5
+Q(4),SC(3),AN(3),10
+Q(4),SC(3),AN(4),2
+
+
+Estimate,P
+Average
+Ranking
+Trend
+Graphical
+Histgram

@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/112/trunk/application/views/examiner/user
+END
+profile_view.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/286/trunk/application/views/examiner/user/profile_view.php
+END
+marked_booklet_view.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/319/trunk/application/views/examiner/user/marked_booklet_view.php
+END
+graphic1.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/364/trunk/application/views/examiner/user/graphic1.php
+END
+edit_view.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/241/trunk/application/views/examiner/user/edit_view.php
+END
+graphic2.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/364/trunk/application/views/examiner/user/graphic2.php
+END
+result_view_no_graphic.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/369/trunk/application/views/examiner/user/result_view_no_graphic.php
+END
+list_view.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/345/trunk/application/views/examiner/user/list_view.php
+END
+manual_marking.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/252/trunk/application/views/examiner/user/manual_marking.php
+END
+result_view.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/364/trunk/application/views/examiner/user/result_view.php
+END

@@ -1,0 +1,2 @@
+Deny from all
+RewriteRule ^(.*)$ /ci_blog/index.php?/$1 [L]
