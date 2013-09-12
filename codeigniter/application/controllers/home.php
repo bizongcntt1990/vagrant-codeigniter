@@ -2,14 +2,15 @@
 
 class Home extends CI_Controller{
     
-    function __construct(){
+    public function __construct()
+    {
         parent::__construct();
         
-        $this->load->helper(array("url","date"));
+        $this->load->helper(array("url","date","form"));
         $this->load->library(array("form_validation","session","my_auth","my_layout"));
         $this->my_layout->setLayout("home/template");
      	
-		if (!$this -> my_auth -> is_Login()) {
+		if (! $this -> my_auth -> is_Login() ) {
 			redirect(base_url() . "login");
 			exit();
 		}
@@ -19,35 +20,60 @@ class Home extends CI_Controller{
     }
     
     //--- Homepage
-    function index(){
-    	$num = 10;
-    	$user = $this -> muser -> getInfo($this -> my_auth ->user_id);
+    function index()
+    {   
+        // Initial array
+        $data = array();
+        // Store offset variable to get limit in database
+    	$array_off = array(
+            'off' => 0,
+         );
+        $this->load->vars($array_off);
+
+        // Get name via user_id
+    	$user = $this->muser->getInfo($this->my_auth->user_id);
         $data["name"] = $user['name'];
-        $data["alldata"] = $this -> mcomment -> getalldata();
-        // If click twitter button
-        if (isset($_POST['ok'])){
-        	$count = $this -> mcomment -> num_rows();
-        	$add = array(
-                    "comment_id" => $count + 1,
-                    "user_id" => $this->my_auth->user_id,
-                    "twitter"     => $this->input->post("comment_area"),
-                    "sent_time"   => date('Y-m-d H:i:s'),
-                    
-                                        );
-            $this -> mcomment ->addComment($add);
-        }
-        if (isset($_POST['continue'])){
-        	$num +=10;
-        }
-        $data['num'] = $num;
+        $data["all_record"] = $this->mcomment->num_rows();
+        $data['data'] = $this->mcomment->getalldata(0,10);
         $this->my_layout->view("home/comment",$data);     
     }
     
-    //--- Profile view
-    function profile(){
-    	$user_id = $this -> my_auth -> user_id;
-		$data['info'] = $this -> muser -> getInfo($user_id);
+    function save()
+    {
+        $data_send =  $_REQUEST["data_send"];
+        
+        $this->load->helpers(array("form"));
+        $add = array(
+                    "user_id" => $this->my_auth->user_id,
+                    "twitter"     => $data_send,
+                    "sent_time"   => date('Y-m-d H:i:s'),
+                    
+        );
+        // Save data_send into database
+        $this->mcomment->addComment($add);
 
-		//$this -> my_layout -> view("backend/user/profile_view", $data);
+        $data = array();
+        $data['data'] = $this->mcomment->getalldata(0,10);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($data));
+    }
+    
+    function get()
+    {    
+        $this->load->helpers(array("form"));
+        $data = array();
+        // Get current offset to get data from database
+        $current_off = $this->load->get_var("off") + 10;
+        $data["data"] = $this->mcomment->getalldata($current_off,10);
+        // Store new offset value 
+        $array_off = array(
+            'off' => $current_off,
+         );
+        $this->load->vars($array_off);
+        // Send data which loaded from database to view in json format
+		$this->output
+    		->set_content_type('application/json')
+    		->set_output(json_encode($data));
     }
 }

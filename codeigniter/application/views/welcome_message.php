@@ -68,7 +68,7 @@
 
 <div id="container">
 	<h1>Welcome to REALWORLD!</h1>
-
+	<?php echo nl2br("Dang\nVan\nLuan");?>
 	<div id="body">
 		<p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
 

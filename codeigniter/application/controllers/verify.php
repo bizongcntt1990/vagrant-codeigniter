@@ -1,8 +1,9 @@
 <?php
-class Verify extends CI_Controller {
+class Verify extends CI_Controller 
+{
 
-	function __construct() {
-
+	function __construct() 
+	{
 		parent :: __construct();
 		$this->load->helper(array (
 			"url",
@@ -16,12 +17,12 @@ class Verify extends CI_Controller {
 
 		$this->load->database();
 		$this->load->model("muser");
-
 	}
 
 	//--- Login
-	function login() {
-		if ($this->my_auth->is_Login()) {
+	function login() 
+	{
+		if ( $this->my_auth->is_Login() ){
 			redirect(base_url() . "login");
 			exit ();
 		}
@@ -29,14 +30,13 @@ class Verify extends CI_Controller {
 		$this->form_validation->set_rules("email", "Email", "required");
 		$this->form_validation->set_rules("password", "Password", "required");
 
-		if ($this->form_validation->run() == FALSE) {
+		if ( $this->form_validation->run() == FALSE ){
 			$this->load->view("login", array (
 				"error" => ""
 			));
 		} else {
 			$u = $this->input->post("email");
 			$p = $this->input->post("password");
-			//echo $u."-".$p;
 			$session = $this->muser->checkLogin($u, $p);
 			
 			//if email and password is correct then session exist
@@ -56,8 +56,10 @@ class Verify extends CI_Controller {
 		}
 	}
 
-	//---- Logout
-	function logout() {
+	//--- Logout
+	function logout() 
+	{
+		// Destroy the session
 		$this->my_auth->sess_read();
 		$this->my_auth->sess_destroy();
 

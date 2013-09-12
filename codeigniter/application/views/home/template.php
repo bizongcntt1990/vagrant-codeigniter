@@ -12,7 +12,7 @@
 
 
 </head>
-<body>
+<body id="main_body">
 <div id="main">
   <!-- TOP -->
   <div id="top">

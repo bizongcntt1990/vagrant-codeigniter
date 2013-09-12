@@ -3,7 +3,7 @@
     $comment_area = array(
                         'name'        => 'comment_area',
                         'id'          => 'comment_area',
-                        'value'       => 'Please input in here to comment',
+                        'value'       => '',
                         'rows'        => '5',
                         'cols'        => '10',
                         'style'       => 'width:50%',
@@ -11,38 +11,85 @@
                     );
 
 ?>
-<?php
-  json_encode($alldata);  
-?>
-<script language="JavaScript" type="text/JavaScript">
-/*function getComments(){
-$.ajax({                                      
-  url: base_url().'home', data: "", dataType: 'json',  success: function(rows)        
-  {
-    for (var i in rows)
-    {
-      var row = rows[i];          
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+  <script type="text/javascript">
+  var click_sent = 0;
+  var click_continue = 1;
+  $(document).ready(function(){
+    
+    $("#ok").click(function(e){
+    e.preventDefault();
+    click_sent++;
+    var all_curr_record = click_sent + Number("<?php echo $all_record; ?>");
+    if ( all_curr_record <= click_continue*10 ){
+        document.getElementById("continue").style.visibility = 'hidden';
+    } else {
+        document.getElementById("continue").style.visibility = 'visible';
+    }
+    var data_send = $("#comment_area").val();    
 
-      var id = row[0];
-      var vname = row[1];
-      $('#output').append("<b>id: </b>"+id+"<b> name: </b>"+vname)
-                  .append("<hr />");
-    } 
-  } 
-});*/
-
-/*function getComments(){
-    var name = $('#name').val();
-    var rno = $('#rno').val();
+     $.ajax({   
+        type : "POST",
+        url : "<?php echo base_url(); ?>home/save", 
+        data : "data_send= " + data_send,
+        dataType: "json",
+        success:function(x){
+           var all_string = "<div id='box_display'>";
+            $.each(x.data, function(index, value) {
+                all_string += "<div id='list_table'>";
+                var cm_string = value.twitter; 
+                all_string += value.name + "&nbsp;&nbsp;&nbsp;" + value.sent_time +
+                            "<br/>" + cm_string + "<br/>";
+                all_string +="</div>";
+            });
+            all_string +="</div>";
+            document.getElementById("twitter_insert").innerHTML = all_string.replace(/[\n\r]/g, "<br />");
+        }     
+    });
+    return false;
+    });
+    
+   
+    $("#continue").click(function(){ 
+    click_continue++;
+    var all_curr_record = click_sent + Number("<?php echo $all_record; ?>");
+    if ( all_curr_record < click_continue*10 ){
+        document.getElementById("continue").style.visibility = 'hidden';
+        //$("#continue").hide('fast');
+    }
     $.ajax({
-        type: "POST",
-        url: "details.php",
-        data: {fname:name, id:rno}
-    }).done(function( result ) {
-        $("#output").append("<b>id: </b>"+id+"<b> name: </b>"+vname)
-                    .append("<hr />");
-    });*/
-}
+        type : "POST",
+        url : "<?php echo base_url(); ?>home/get", // get comment
+        data: "", //
+        dataType: "json", 
+        success:function(x){ 
+            var all_string = "<div id='box_display'>";
+            $.each(x.data, function(index, value) {
+                all_string += "<div id='list_table'>"; 
+                all_string += value.name + "&nbsp;&nbsp;&nbsp;" + value.sent_time +
+                            "<br/>" + value.twitter + "<br/>";
+                all_string +="</div>";
+            });
+            all_string +="</div>";
+            document.getElementById("detail").innerHTML = all_string.replace(/[\n\r]/g, "<br />");
+        }
+    }); 
+   });
+    function auto_check_button()
+    {
+        var all_curr_record = Number("<?php echo $all_record; ?>");
+        if ( all_curr_record <= 10 ){
+            document.getElementById("continue").style.visibility = 'hidden';
+            //alert("auto hide");
+        //$("#continue").hide('fast');
+        } else {
+            document.getElementById("continue").style.visibility = 'visible';
+        }
+    }
+window.onload = auto_check_button();
+});
+
 </script>
 
 <div id="box_entry">
@@ -63,19 +110,26 @@ $.ajax({
         <?php echo form_textarea($comment_area); ?><br />
 		<br/>
         
-        <label>&nbsp;</label> <input type="submit" name="ok" value="ツィート" /><br />
+        <label>&nbsp;</label> <input type="button" name="ok" id="ok" value="ツィート" onclick=/><br />
 
         </fieldset>
     </form>
 
-    <form name="frmEdit" id="frmEdit" action="" method="post" enctype="multipart-formdata">
-        <fieldset>
-        <legend>comment</legend>
-        <?php echo form_textarea($comment_area); ?><br />
-        <br/>
-        
-        <label>&nbsp;</label> <input type="submit" name="continue" value="もっと見る" /><br />
+    <div id="box_display">
+        <div id="twitter_insert">
+        <?php 
+            foreach ($data as $item) {
+                echo "<div id='list_table'>";
+                echo $item['name']."&nbsp;&nbsp;&nbsp;".$item['sent_time'].
+                "<br/>".nl2br($item['twitter'])."<br/>";
+                echo "</div>";
+            }
+        ?>
+        </div>
+        <div id="detail">
 
-        </fieldset>
-    </form>
+        </div>
+        <label>&nbsp;</label> <input type="button" name="continue" id="continue" value="もっと見る" onclick=/><br />
+    </div>
+
 </div>
