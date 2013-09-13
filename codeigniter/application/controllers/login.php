@@ -59,9 +59,15 @@ class Login extends CI_Controller
                     
                 );
                 if ( $this->muser->addUser($add) ){
-                    $data['report'] = "データの追加することが成功でした!";
-                    $this->my_layout->view("report",$data);
-                    redirect(base_url()."login/register_complete");
+                    $add_user = $this->muser->getInfoByEmail($this->input->post("email"));
+                    // Store data into session
+                    $data = array (
+                        "email" => $this->input->post("email"),
+                        "password" => md5($this->input->post("password")),
+                        "user_id" => $add_user['user_id'],
+                    );
+                    $this->my_auth->set_userdata($data);
+                    redirect(base_url()."home");
                 } else {
                     $data['report'] = "データの追加することが失敗でした！";
                 }
