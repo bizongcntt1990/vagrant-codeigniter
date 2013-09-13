@@ -1,8 +1,10 @@
 <?php
 
-class Login extends CI_Controller{
+class Login extends CI_Controller
+{
     
-    function __construct(){
+    function __construct()
+    {
         parent::__construct();
         
         $this->load->helper(array("url","date"));
@@ -17,7 +19,7 @@ class Login extends CI_Controller{
     function index()
     {
               
-        if(!$this->my_auth->is_Login())
+        if(! $this->my_auth->is_Login() )
         {
             redirect(base_url()."verify/login");
             exit();
@@ -31,39 +33,39 @@ class Login extends CI_Controller{
     //---- Register new user
     function register_new()
     {
-        if($this->my_auth->is_Login()){
-            redirect(base_url()."login");
+        if( $this->my_auth->is_Login() ){
+            redirect( base_url()."login" );
             exit();
         }
 
         $this->form_validation->set_rules("name","Name","required");
-        $this->form_validation->set_rules("password","Password","required|matches[repassword]");
+        $this->form_validation->set_rules("password","Password","required|min_length[6]|matches[repassword]");
         $this->form_validation->set_rules("email","Email","required|valid_email|callback_checkEmail");
         $data['error'] = "";
         
         
-        if($this->form_validation->run()==FALSE){
+        if( $this->form_validation->run() == FALSE ){
 
             $this->load->view("register",$data);
             
-        }else{
-            if (!$this->muser->checkEmail($this->input->post("email"))){
+        } else {
+            if (! $this->muser->checkEmail($this->input->post("email")) ){
 
                 $add = array(
                     "name" => $this->input->post("name"),
                     "email" => $this->input->post("email"),
                     "password" => md5($this->input->post("password")),
                     
-                                        );
-                if ($this->muser->addUser($add)){
-                    $data['report']="データの追加することが成功でした!";
+                );
+                if ( $this->muser->addUser($add) ){
+                    $data['report'] = "データの追加することが成功でした!";
                     $this->my_layout->view("report",$data);
                     redirect(base_url()."login/register_complete");
                 } else {
-                    $data['report']="データの追加することが失敗でした！";
+                    $data['report'] = "データの追加することが失敗でした！";
                 }
-            }else{
-                    $data['report']="メールアドレスが存在しています。別のメールアドレスを入力してください！";
+            } else {
+                    $data['report'] = "メールアドレスが存在しています。別のメールアドレスを入力してください！";
             }
             $this->load->view("register",$data);
         }

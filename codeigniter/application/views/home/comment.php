@@ -26,7 +26,7 @@
         document.getElementById("continue").style.visibility = 'hidden';
     } else {
         document.getElementById("continue").style.visibility = 'visible';
-    }
+    } 
     var data_send = $("#comment_area").val();    
 
      $.ajax({   
@@ -87,7 +87,7 @@
             document.getElementById("continue").style.visibility = 'visible';
         }
     }
-window.onload = auto_check_button();
+    window.onload = auto_check_button();
 });
 
 </script>
