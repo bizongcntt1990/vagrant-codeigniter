@@ -45,7 +45,8 @@ class Login extends CI_Controller
         
         
         if( $this->form_validation->run() == FALSE ){
-
+            $data['old_name'] = $this->input->post("name");
+            $data['old_email'] = $this->input->post("email");
             $this->load->view("register",$data);
             
         } else {
@@ -67,6 +68,8 @@ class Login extends CI_Controller
             } else {
                     $data['report'] = "メールアドレスが存在しています。別のメールアドレスを入力してください！";
             }
+            $data['old_name'] = $this->input->post("name");
+            $data['old_email'] = $this->input->post("email");
             $this->load->view("register",$data);
         }
         

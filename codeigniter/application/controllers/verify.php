@@ -31,9 +31,11 @@ class Verify extends CI_Controller
 		$this->form_validation->set_rules("password", "Password", "required");
 
 		if ( $this->form_validation->run() == FALSE ){
-			$this->load->view("login", array (
-				"error" => ""
-			));
+			$add = array(
+                    "error" => "",
+                    "old_email" => $this->input->post("email"),
+                );
+			$this->load->view("login",$add);
 		} else {
 			$u = $this->input->post("email");
 			$p = $this->input->post("password");
@@ -49,9 +51,11 @@ class Verify extends CI_Controller
 				$this->my_auth->set_userdata($data);
 				redirect(base_url() . "home");
 			} else {
-				$this->load->view("login", array (
-					"error" => "メールアドレスやパスワードが間違い！"
-				));
+				$add = array(
+                    "error" => "メールアドレスやパスワードが間違い！",
+                    "old_email" => $u,
+                );
+				$this->load->view("login",$add);
 			}
 		}
 	}

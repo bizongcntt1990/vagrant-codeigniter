@@ -2,11 +2,13 @@
     $name = array(
                         "name"  => "name",
                         "id"    => "name",
+                        "value" => $old_name,
                         "size"  => "20",
                     );
     $email = array(
                         'name'        => 'email',
                         'id'          => 'email',
+                        'value'       => $old_email,
                         'size'        => '20',
                     );
     $password = array(

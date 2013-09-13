@@ -2,6 +2,7 @@
     $email = array(
                         'name'        => 'email',
                         'id'          => 'email',
+                        'value'       =>  $old_email,
                         'size'        => '20',
                     );
     $password = array(
