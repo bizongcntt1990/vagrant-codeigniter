@@ -1,73 +1,77 @@
 <?php
 class Verify extends CI_Controller 
 {
+	private $rules = array(
+        array(
+            'field' => 'email',
+            'label' => 'Email',
+            'rules' => 'trim|required|xss_clean|valid_email'
+        ),
+        array(
+        	'field' => 'password',
+        	'label' => 'Password',
+        	'rules' => 'trim|required|xss_clean'
+        ),
+    );
 
-	function __construct() 
+	public function __construct() 
 	{
-		parent :: __construct();
-		$this->load->helper(array (
-			"url",
-			"form"
+		parent::__construct();
+		$this->load->helper(array(
+			'url',
+			'form'
 		));
-		$this->load->library(array (
-			"form_validation",
-			"session",
-			"my_auth"
+		$this->load->library(array(
+			'form_validation',
+			'session',
+			'my_auth'
 		));
-
+		$this->form_validation->set_rules($this->rules);
 		$this->load->database();
-		$this->load->model("muser");
+		$this->load->model('muser');
 	}
 
 	//--- Login
-	function login() 
+	public function login() 
 	{
-		if ( $this->my_auth->is_Login() ){
-			redirect(base_url() . "login");
+		if ($this->my_auth->is_Login()) {
+			redirect(base_url(). 'login');
 			exit ();
 		}
-        
-		$this->form_validation->set_rules("email", "Email", "required|valid_email");
-		$this->form_validation->set_rules("password", "Password", "required");
-
-		if ( $this->form_validation->run() == FALSE ){
+		if ($this->form_validation->run() === false) {
 			$add = array(
-                    "error" => "",
-                    "old_email" => $this->input->post("email"),
-                );
-			$this->load->view("login",$add);
+                'error' => '',
+            );
+			$this->load->view('login',$add);
 		} else {
-			$u = $this->input->post("email");
-			$p = $this->input->post("password");
+			$u = $this->input->post('email');
+			$p = $this->input->post('password');
 			$session = $this->muser->checkLogin($u, $p);
 			
 			//if email and password is correct then session exist
 			if ($session) {
-				$data = array (
-					"email" => $session['email'],
-					"password" => $session['password'],
-					"user_id" => $session['user_id'],
+				$data = array(
+					'email' => $session['email'],
+					'user_id' => $session['user_id'],
 				);
 				$this->my_auth->set_userdata($data);
-				redirect(base_url() . "home");
+				redirect(base_url(). 'home');
 			} else {
 				$add = array(
-                    "error" => "メールアドレスやパスワードが間違い！",
-                    "old_email" => $u,
+                    'error' => 'メールアドレスやパスワードが間違い！',
                 );
-				$this->load->view("login",$add);
+				$this->load->view('login', $add);
 			}
 		}
 	}
 
 	//--- Logout
-	function logout() 
+	public function logout() 
 	{
 		// Destroy the session
 		$this->my_auth->sess_read();
 		$this->my_auth->sess_destroy();
-
-		redirect(base_url() . "login");
+		redirect(base_url(). 'login');
 	}
 
 }

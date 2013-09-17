@@ -2,94 +2,91 @@
 class muser extends CI_Model
 {
 
-    private $_table = "user";
+    private $_table = 'user';
     
-    function __contruct()
+    public function __contruct()
     {
         parent::__construct();
         $this->load->database();
     }
 
-    //--- get all data
-    function getalldata($off="",$limit="")
+    //--- Get all data
+    public function getalldata($off = "", $limit = "")
     {
-        $this->db->select('*');
+        $this->db->select(STAR);
         $this->db->from($this->_table);
-        $this->db->limit($off,$limit);
-        $this->db->order_by("user_id","asc");
+        $this->db->limit($off, $limit);
+        $this->db->order_by('user_id', 'asc');
         $query = $this->db->get();
         $data = $query->result_array();
         return $data;
     }
     
-    //--- get an information by id
-    function getInfo($id)
+    //--- Get an information by id
+    public function getInfo($id)
     {
-        $this->db->where("user_id",$id);
+        $this->db->where('user_id', $id);
         $query = $this->db->get($this->_table);
-        
-        if( $query )
+        if ($query) {
             return $query->row_array();
-        else
-            return FALSE;
+        } else {
+            return false;
+        }
     }
 
-    //---- get information by email
-    function getInfoByEmail($email)
+    //---- Get information by email
+    public function getInfoByEmail($email)
     {
-        $this->db->where("email",$email);
+        $this->db->where('email', $email);
         $query = $this->db->get($this->_table);
-
-        if( $query )
+        if ($query){
             return $query->row_array();
-        else
-            return FALSE;
+        } else {
+            return false;
+        }
     }
 
     //--- Add new user
-    function addUser($data)
+    public function addUser($data)
     {
-        if($this->db->insert($this->_table,$data)){
-            return TRUE;
-        } else{
-            return FALSE;
+        if ($this->db->insert($this->_table, $data)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
     // Sum of record
-    function num_rows()
+    public function num_rows()
     {
         return $this->db->count_all($this->_table);
     }
     
-    
-    //--- check email exist
-    function checkEmail($email)
+    //--- Check email exist
+    public function checkEmail($email)
     {
-        $this->db->where("email",$email);
+        $this->db->where('email', $email);
         $query = $this->db->get($this->_table);
-        if( $query->num_rows()==0 ){
-            return FALSE;
+        if ($query->num_rows() == 0) {
+            return false;
         } else {
             return $query->row_array();
-        }
-        
+        }   
     }
     
     //--- check login
-    function checkLogin($email,$password)
+    public function checkLogin($email, $password)
     {
         $u = $email;
         $p = md5($password);
-        $this->db->where("email",$u);
-        $this->db->where("password",$p);
+        $this->db->where('email', $u);
+        $this->db->where('password', $p);
         $query = $this->db->get($this->_table);
-        if( $query->num_rows()==0 ){
-            return FALSE;
+        if ($query->num_rows() == 0 ) {
+            return false;
         } else {
             return $query->row_array();
-        }
-        
+        }        
     }
 }
 ?>

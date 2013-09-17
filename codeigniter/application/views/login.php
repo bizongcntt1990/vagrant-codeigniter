@@ -1,20 +1,3 @@
-<?php
-    $email = array(
-                        'name'        => 'email',
-                        'id'          => 'email',
-                        'value'       =>  $old_email,
-                        'size'        => '20',
-                    );
-    $password = array(
-                        'name'        => 'password',
-                        'id'          => 'password',
-                        'size'        => '20',
-                    );
-    $submit = array(
-                        "name"=>"ok",
-                        "value"=>"ログイン",
-                    );
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -24,24 +7,28 @@
 
 </head>
 <body>
-<?php
-    echo form_open(base_url()."verify/login");
-    echo form_fieldset("");
-    echo form_label("メールアドレス : ").form_input($email)."<br/>";
-    echo form_label("パスワード : ").form_password($password)."<br/>";
-    echo form_label("").form_submit($submit)."<br/>";
-    
-    echo "<a href='".base_url()."login/register_new'>ユーザー登録はこちらから</a><br/>";
-    //--------------- ERROR
-    echo "<span class=error>";
-        echo validation_errors();
-        if($error!="")
-         echo $error;
-    echo "</span>";
-    //-----------------------
-    echo form_fieldset_close();
-    echo form_close();
-    
-?>
+<?=form_open(base_url().'verify/login')?>
+<fieldset>
+    <legend align='center'>    
+      システムログイン
+    </legend>
+    <div>
+        <label>メールアドレス</label>
+        <input type="text" name="email" id="email" value="<?=set_value('email')?>" maxlength="20">
+    </div>
+    <div>
+        <label>パスワード</label>
+        <input type="password" name="password" id="password" maxlength="20">
+    </div>
+    <div align='center' >
+        <input type="submit" name="ok" value="ログイン" />
+    </div>
+    <a href=<?=base_url()."login/register_new"?>>ユーザー登録はこちらから</a><br/>
+    <span class='error'>
+        <?=form_error('email')?>
+        <?=form_error('password')?>
+    </span>
+</fieldset>
+<?=form_close()?>
 </body>
 </html>

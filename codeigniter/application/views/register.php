@@ -1,32 +1,3 @@
-<?php
-    $name = array(
-                        "name"  => "name",
-                        "id"    => "name",
-                        "value" => $old_name,
-                        "size"  => "20",
-                    );
-    $email = array(
-                        'name'        => 'email',
-                        'id'          => 'email',
-                        'value'       => $old_email,
-                        'size'        => '20',
-                    );
-    $password = array(
-                        'name'        => 'password',
-                        'id'          => 'password',
-                        'size'        => '20',
-                    );
-
-    $repassword = array(
-                        'name'        => 'repassword',
-                        'id'          => 'lname',
-                        'size'        => '20',
-                    );
-    $submit = array(
-                        "name"=>"ok",
-                        "value"=>"登録",
-                    );
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -36,27 +7,36 @@
 
 </head>
 <body>
-<?php
-    echo form_open(base_url()."login/register_new");
-    echo form_fieldset("");
-    echo form_label("名前 : ").form_input($name)."<br/>";
-    echo form_label("メールアドレス : ").form_input($email)."<br/>";
-    echo form_label("パスワード : ").form_password($password)."<br/>";
-    echo form_label("再パスワード : ").form_password($repassword)."<br/>";
-    echo form_label("").form_submit($submit)."<br/>";
-    
-    //echo "<a href='".base_url()."register/add'>ユーザー登録はこちらから</a><br/>";
-    //--------------- ERROR
-    echo "<span class=error>";
-        echo validation_errors();
-        if($error!="")
-         echo $error;
-    echo "</span>";
-    //-----------------------
-
-    echo form_fieldset_close();
-    echo form_close();
-    
-?>
+<?=form_open(base_url().'login/register_new')?>
+<fieldset>
+    <legend align='center'>    
+      ユーザー登録
+    </legend>
+    <div>
+        <label>名前</label>
+        <input type="text" name="name" id="name" value="<?=set_value('name')?>" maxlength="20">
+    </div>
+    <div>
+        <label>メールアドレス</label>
+        <input type="text" name="email" id="email" value="<?=set_value('email')?>" maxlength="20">
+    </div>
+    <div>
+        <label>パスワード</label>
+        <input type="password" name="password" id="password" maxlength="20">
+    </div>
+    <div>
+        <label>再パスワード</label>
+        <input type="password" name="repassword" id="lname" maxlength="20">
+    </div>
+    <div align='center' >
+        <input type="submit" name="ok" value="登録" />
+    </div>
+    <span class='error'>
+        <?=form_error('name')?>
+        <?=form_error('email')?>
+        <?=form_error('password')?>
+    </span>
+</fieldset>
+<?=form_close()?>
 </body>
 </html>
