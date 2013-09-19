@@ -23,7 +23,7 @@ $memcached['config'] = array(
                             'auto_compress_tresh'   => FALSE,   // Controls the minimum value length before attempting to compress automatically.
                             'auto_compress_savings' => 0.2, // Specifies the minimum amount of savings to actually store the value compressed. 
                                                             // The supplied value must be between 0 and 1.
-                            'expiration'    => 10,    // Default content expiration value (in seconds)
+                            'expiration'    => 20,    // Default content expiration value (in seconds)
                             'delete_expiration' => 0    // Default time between the delete command and the actual delete action occurs (in seconds)
                         );
 

@@ -2,7 +2,9 @@
 
 class Home extends CI_Controller
 {
-
+    const MAX_ROWS = 10;
+    const MAX_CM = 200;
+    const ZERO = 0;
     public function __construct()
     {
         parent::__construct();
@@ -29,7 +31,7 @@ class Home extends CI_Controller
         // Lets try to get the key 
         $results = $this->memcached_library->get($key_id);
         if (! $results) {
-             $query = $this->mcomment->getalldata($userid, ZERO, MAX_ROWS);
+             $query = $this->mcomment->getalldata($userid, self::ZERO, self::MAX_ROWS);
             // Lets store the results
             $this->memcached_library->set($key_id, $query, null);
             $num_rows = $this->mcomment->num_rows_id($userid);
@@ -58,7 +60,7 @@ class Home extends CI_Controller
         $this->load->helpers(array('form'));
         $data_send =  $_POST['data_send'];
         $status = "ok";
-        if (strlen($data_send) == 1 || strlen($data_send) > MAX_CM) {
+        if (strlen($data_send) == 1 || strlen($data_send) > self::MAX_CM) {
             $status = "error";
         } else {
             $add = array(
@@ -70,9 +72,11 @@ class Home extends CI_Controller
             // Save data_send into database
             $this->mcomment->addComment($add);
         } 
+        $key_id = 'user'.$this->my_auth->user_id;
+        $this->memcached_library->delete($key_id);
         $userid = $this->my_auth->user_id;
         $data = array();
-        $data['data'] = $this->mcomment->getalldata($userid, ZERO, MAX_ROWS);
+        $data['data'] = $this->mcomment->getalldata($userid, self::ZERO, self::MAX_ROWS);
         $data['status'] = $status;
         $this->output
             ->set_content_type('application/json')
@@ -83,11 +87,11 @@ class Home extends CI_Controller
     {    
         $this->load->helpers(array('form'));
         $data_send =  $_POST['num_click'];
-        $current_off = ($data_send-1)*MAX_ROWS;
+        $current_off = ($data_send-1)*self::MAX_ROWS;
         $data = array();
         // Get current offset to get data from database
         $userid = $this->my_auth->user_id;
-        $data['data'] = $this->mcomment->getalldata($userid, $current_off, MAX_ROWS);
+        $data['data'] = $this->mcomment->getalldata($userid, $current_off, self::MAX_ROWS);
 
         // Send data which loaded from database to view in json format
         $this->output

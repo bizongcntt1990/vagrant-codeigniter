@@ -49,8 +49,7 @@ class mcomment extends CI_Model
     public function num_rows_id($id)
     {
         $this->db->where("user_id", $id);
-        $query = $this->db->get($this->_table);
-        return $query->num_rows();
+        return $this->db->count_all_results($this->_table);
     }
 
     //--- Sum of record

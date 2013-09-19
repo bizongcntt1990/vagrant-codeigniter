@@ -72,7 +72,7 @@ class Verify extends CI_Controller
 		// Destroy the session
 		$this->my_auth->sess_read();
 		$this->my_auth->sess_destroy();
-		$this->memcached_library->flush();
+		//$this->memcached_library->flush();
 		redirect(base_url(). 'login');
 	}
 
