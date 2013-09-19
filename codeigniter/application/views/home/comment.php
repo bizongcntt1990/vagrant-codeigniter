@@ -1,103 +1,5 @@
-  
-  <?php
-    $comment_area = array(
-                        'name'        => 'comment_area',
-                        'id'          => 'comment_area',
-                        'value'       => '',
-                        'rows'        => '5',
-                        'cols'        => '10',
-                        'style'       => 'width:50%',
-                       
-                    );
-
-?>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-  <script type="text/javascript">
-  var click_sent = 0;
-  var click_continue = 1;
-  var max_rows = Number("<?php echo MAX_ROWS; ?>");
-  var max_cm = Number("<?php echo MAX_CM; ?>");
-  var all_rd = Number("<?php echo $all_record; ?>");
-  
-  $(document).ready(function(){
-    auto_check_button();
-
-    $("#ok").click(function(e){
-    e.preventDefault();
-    click_sent++;
-    var all_curr_record = click_sent + all_rd;
-    var data_send = $("#comment_area").val();    
-    if ( all_curr_record <= max_rows ){
-        $("#continue").hide('fast');
-    } else {
-        $("#continue").show();
-    }
-     $.ajax({   
-        type : "POST",
-        url : "home/save", 
-        data : "data_send= " + data_send,
-        dataType: "json",
-        beforeSend:function(){
-            if (data_send.length ==0) {
-                alert(" Server| Data_send is null");
-            } else if (data_send.length > max_cm) {
-                alert(" Server| Data_send is more than 200");
-            }
-        },
-        success:function(x){
-            if (x.status == "error") alert("Client| Error");
-            var all_string = "<div id='box_display'>";
-            $.each(x.data, function(index, value) {
-                all_string += "<div id='list_table'>";
-                all_string += value.name + "&nbsp;&nbsp;&nbsp;" + value.sent_time +
-                            "<br/>" + value.twitter + "<br/>";
-                all_string +="</div>";
-            });
-            all_string +="</div>";
-            $("#twitter_insert").html(all_string.replace(/[\n\r]/g, "<br />"));
-        }     
-        });
-        return false;
-    });
-   
-    $("#continue").click(function(){ 
-    click_continue++;
-    var all_curr_record = click_sent + all_rd;
-    if ( all_curr_record < click_continue*max_rows ){
-        $("#continue").hide('fast');
-    }
-    $.ajax({
-        type : "POST",
-        url : "home/get", // get comment
-        data: "num_click=" + click_continue, //
-        dataType: "json", 
-        success:function(x){
-            var all_string = "";
-            $.each(x.data, function(index, value) {
-                all_string += "<div id='list_table'>"; 
-                all_string += value.name + "&nbsp;&nbsp;&nbsp;" + value.sent_time +
-                            "<br/>" + value.twitter + "<br/>";
-                all_string +="</div>";
-            });
-            $("#twitter_insert").append(all_string.replace(/[\n\r]/g, "<br />"));
-        }
-        }); 
-        return false;
-   });
-    function auto_check_button()
-    {
-        var all_curr_record = all_rd;
-        if (all_curr_record <= max_rows) {
-            $("#continue").hide('fast');
-        } else {
-            $("#continue").show();
-        }
-    }
-});
-
-</script>
-
 <div id="box_entry">
   	  <h2>コメント</h2>
       <div class="error">
@@ -112,7 +14,7 @@
      <form name="frmEdit" id="frmEdit" action="" method="post" enctype="multipart-formdata">
         <fieldset>
         <legend>TWITTER</legend>
-        <?php echo form_textarea($comment_area); ?><br />
+        <textarea name="comment_area" id= "comment_area" cols="30" rows="6"></textarea> <br/>
 		<br/>
         
         <label>&nbsp;</label> <input type="button" name="ok" id="ok" value="ツィート"/><br />
@@ -135,3 +37,92 @@
     </div>
 
 </div>
+ <script type="text/javascript">
+  var click_sent = 0;
+  var click_continue = 1;
+  var max_rows = Number("<?php echo MAX_ROWS; ?>");
+  var max_cm = Number("<?php echo MAX_CM; ?>");
+  var all_rd = Number("<?php echo $all_record; ?>");
+  
+  $(document).ready(function()
+  {
+    auto_check_button();
+
+    $("#ok").click(function(e) {
+        e.preventDefault();
+        click_sent++;
+        var all_curr_record = click_sent + all_rd;
+        var data_send = $("#comment_area").val();    
+        if (all_curr_record <= max_rows) {
+            $("#continue").hide('fast');
+        } else {
+            $("#continue").show();
+        }
+        $.ajax({   
+            type : "POST",
+            url : "home/save", 
+            data : "data_send= " + data_send,
+            dataType: "json",
+            beforeSend:function()
+            {
+                if (data_send.length ==0) {
+                    alert(" Server| Data_send is null");
+                } else if (data_send.length > max_cm) {
+                    alert(" Server| Data_send is more than 200");
+                }
+            },
+            success:function(x)
+            {
+                if (x.status == "error") {
+                    alert("Client| Error");
+                }
+                var all_string = "<div id='box_display'>";
+                $.each(x.data, function(index, value) {
+                    all_string += "<div id='list_table'>";
+                    all_string += value.name + "&nbsp;&nbsp;&nbsp;" + value.sent_time +
+                                "<br/>" + value.twitter + "<br/>";
+                    all_string += "</div>";
+                });
+                all_string += "</div>";
+                $("#twitter_insert").html(all_string.replace(/[\n\r]/g, "<br />"));
+            }     
+            });
+        return false;
+    });
+   
+    $("#continue").click(function(){ 
+        click_continue++;
+        var all_curr_record = click_sent + all_rd;
+        if ( all_curr_record < click_continue*max_rows ){
+            $("#continue").hide('fast');
+        }
+        $.ajax({
+            type : "POST",
+            url : "home/get", // get comment
+            data: "num_click=" + click_continue, //
+            dataType: "json", 
+            success:function(x){
+                var all_string = "";
+                $.each(x.data, function(index, value) {
+                    all_string += "<div id='list_table'>"; 
+                    all_string += value.name + "&nbsp;&nbsp;&nbsp;" + value.sent_time +
+                                "<br/>" + value.twitter + "<br/>";
+                    all_string +="</div>";
+                });
+                $("#twitter_insert").append(all_string.replace(/[\n\r]/g, "<br />"));
+            }
+        }); 
+        return false;
+   });
+    function auto_check_button()
+    {
+        var all_curr_record = all_rd;
+        if (all_curr_record <= max_rows) {
+            $("#continue").hide('fast');
+        } else {
+            $("#continue").show();
+        }
+    }
+});
+
+</script>

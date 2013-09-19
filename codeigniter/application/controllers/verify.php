@@ -24,7 +24,8 @@ class Verify extends CI_Controller
 		$this->load->library(array(
 			'form_validation',
 			'session',
-			'my_auth'
+			'my_auth',
+			'memcached_library'
 		));
 		$this->form_validation->set_rules($this->rules);
 		$this->load->database();
@@ -71,6 +72,7 @@ class Verify extends CI_Controller
 		// Destroy the session
 		$this->my_auth->sess_read();
 		$this->my_auth->sess_destroy();
+		$this->memcached_library->flush();
 		redirect(base_url(). 'login');
 	}
 

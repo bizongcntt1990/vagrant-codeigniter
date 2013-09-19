@@ -18,7 +18,7 @@ define('FILE_WRITE_MODE', 0666);
 define('DIR_READ_MODE', 0755);
 define('DIR_WRITE_MODE', 0777);
 
-define('MAX_ROWS', 3);
+define('MAX_ROWS', 10);
 define('MAX_CM', 200);
 define('ZERO', 0);
 define('STAR','*');
