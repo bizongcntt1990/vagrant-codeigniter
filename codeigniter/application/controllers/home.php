@@ -36,11 +36,6 @@ class Home extends CI_Controller
             $this->memcached_library->set('num', $num_rows, null);
             // Initial array
             $data = array();
-            // Store offset variable to get limit in database
-            $array_off = array(
-                'off' => ZERO,
-            );
-            $this->load->vars($array_off);
             // Get name via user_id
             $user = $this->muser->getInfo($userid);
             $data['name'] = $user['name'];
@@ -87,17 +82,13 @@ class Home extends CI_Controller
     public function get()
     {    
         $this->load->helpers(array('form'));
+        $data_send =  $_POST['num_click'];
+        $current_off = ($data_send-1)*MAX_ROWS;
         $data = array();
         // Get current offset to get data from database
-        $current_off = $this->load->get_var('off') + MAX_ROWS;
-        $data['curr_off'] = $current_off;
         $userid = $this->my_auth->user_id;
         $data['data'] = $this->mcomment->getalldata($userid, $current_off, MAX_ROWS);
-        // Store new offset value 
-        $array_off = array(
-            'off' => $current_off,
-        );
-        $this->load->vars($array_off);
+
         // Send data which loaded from database to view in json format
         $this->output
             ->set_content_type('application/json')

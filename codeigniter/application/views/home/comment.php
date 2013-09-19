@@ -18,15 +18,21 @@
   var click_continue = 1;
   var max_rows = Number("<?php echo MAX_ROWS; ?>");
   var max_cm = Number("<?php echo MAX_CM; ?>");
+  var all_rd = Number("<?php echo $all_record; ?>");
+  
   $(document).ready(function(){
     auto_check_button();
 
     $("#ok").click(function(e){
     e.preventDefault();
     click_sent++;
-    var all_curr_record = click_sent + Number("<?php echo $all_record; ?>");
+    var all_curr_record = click_sent + all_rd;
     var data_send = $("#comment_area").val();    
-
+    if ( all_curr_record <= max_rows ){
+        $("#continue").hide('fast');
+    } else {
+        $("#continue").show();
+    }
      $.ajax({   
         type : "POST",
         url : "home/save", 
@@ -41,7 +47,7 @@
         },
         success:function(x){
             if (x.status == "error") alert("Client| Error");
-           var all_string = "<div id='box_display'>";
+            var all_string = "<div id='box_display'>";
             $.each(x.data, function(index, value) {
                 all_string += "<div id='list_table'>";
                 all_string += value.name + "&nbsp;&nbsp;&nbsp;" + value.sent_time +
@@ -51,39 +57,37 @@
             all_string +="</div>";
             $("#twitter_insert").html(all_string.replace(/[\n\r]/g, "<br />"));
         }     
+        });
+        return false;
     });
-    return false;
-    });
-    
    
     $("#continue").click(function(){ 
     click_continue++;
-    var all_curr_record = click_sent + Number("<?php echo $all_record; ?>");
+    var all_curr_record = click_sent + all_rd;
     if ( all_curr_record < click_continue*max_rows ){
         $("#continue").hide('fast');
     }
     $.ajax({
         type : "POST",
         url : "home/get", // get comment
-        data: "", //
+        data: "num_click=" + click_continue, //
         dataType: "json", 
         success:function(x){
-             
-            var all_string = "<div id='box_display'>";
+            var all_string = "";
             $.each(x.data, function(index, value) {
                 all_string += "<div id='list_table'>"; 
                 all_string += value.name + "&nbsp;&nbsp;&nbsp;" + value.sent_time +
                             "<br/>" + value.twitter + "<br/>";
                 all_string +="</div>";
             });
-            all_string +="</div>";
-            $("#detail").html(all_string.replace(/[\n\r]/g, "<br />"));
+            $("#twitter_insert").append(all_string.replace(/[\n\r]/g, "<br />"));
         }
-    }); 
+        }); 
+        return false;
    });
     function auto_check_button()
     {
-        var all_curr_record = Number("<?php echo $all_record; ?>");
+        var all_curr_record = all_rd;
         if (all_curr_record <= max_rows) {
             $("#continue").hide('fast');
         } else {
@@ -126,9 +130,6 @@
                 echo "</div>";
             }
         ?>
-        </div>
-        <div id="detail">
-
         </div>
         <label>&nbsp;</label> <input type="button" name="continue" id="continue" value="もっと見る"/><br />
     </div>
