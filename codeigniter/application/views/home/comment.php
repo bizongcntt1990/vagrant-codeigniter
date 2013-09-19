@@ -66,29 +66,20 @@
             beforeSend:function()
             {
                 if (data_send.length ==0) {
+                    click_sent--;
                     alert(" Server| Data_send is null");
                 } else if (data_send.length > max_cm) {
+                    click_sent--;
                     alert(" Server| Data_send is more than 200");
                 }
             },
             success:function(x)
             {
-                if (click_continue == 1) {
-                    var all_string = "<div id='box_display'>";
-                    $.each(x.data, function(index, value) {
-                        all_string += "<div id='list_table'>";
-                        all_string += value.name + "&nbsp;&nbsp;&nbsp;" + value.sent_time +
-                                "<br/>" + value.twitter + "<br/>";
-                        all_string += "</div>";
-                    });
-                    $("#twitter_insert").html(all_string.replace(/[\n\r]/g, "<br />"));
-                } else {
-                        var all_string = "<div id='list_table'>";
-                        all_string += x.data[0].name + "&nbsp;&nbsp;&nbsp;" + x.data[0].sent_time +
-                                "<br/>" + x.data[0].twitter + "<br/>";
-                        all_string += "</div>";
-                        $("#twitter_insert").prepend(all_string.replace(/[\n\r]/g, "<br />"));     
-                }
+                var all_string = "<div id='list_table'>";
+                all_string += x.data[0].name + "&nbsp;&nbsp;&nbsp;" + x.data[0].sent_time +
+                        "<br/>" + x.data[0].twitter + "<br/>";
+                all_string += "</div>";
+                $("#twitter_insert").prepend(all_string.replace(/[\n\r]/g, "<br />"));     
             }     
         });
         return false;
@@ -103,9 +94,9 @@
         $.ajax({
             type : "POST",
             url : "home/get", // get comment
-            data: "num_click=" + click_continue, //
+            data: {num_click: click_continue, asc: click_sent}, //
             dataType: "json", 
-            success:function(x){
+            success:function(x) {
                 var all_string = "";
                 $.each(x.data, function(index, value) {
                     all_string += "<div id='list_table'>"; 

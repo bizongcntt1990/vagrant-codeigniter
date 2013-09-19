@@ -5,6 +5,7 @@ class Home extends CI_Controller
     const MAX_ROWS = 10;
     const MAX_CM = 200;
     const ZERO = 0;
+
     public function __construct()
     {
         parent::__construct();
@@ -87,7 +88,8 @@ class Home extends CI_Controller
     {    
         $this->load->helpers(array('form'));
         $data_send =  $_POST['num_click'];
-        $current_off = ($data_send-1)*self::MAX_ROWS;
+        $asc = $_POST['asc'];
+        $current_off = ($data_send-1)*self::MAX_ROWS + $asc;
         $data = array();
         // Get current offset to get data from database
         $userid = $this->my_auth->user_id;
