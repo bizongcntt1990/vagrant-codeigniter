@@ -40,8 +40,8 @@
  <script type="text/javascript">
   var click_sent = 0;
   var click_continue = 1;
-  var max_rows = Number("<?php echo Home::MAX_ROWS; ?>");
-  var max_cm = Number("<?php echo Home::MAX_CM; ?>");
+  var max_rows = Number("<?php echo element('max_rows', $this->config->item('array_const')); ?>");
+  var max_cm = Number("<?php echo element('max_chars', $this->config->item('array_const')); ?>");
   var all_rd = Number("<?php echo $all_record; ?>");
   
   $(document).ready(function()
@@ -75,11 +75,13 @@
             },
             success:function(x)
             {
-                var all_string = "<div id='list_table'>";
-                all_string += x.data[0].name + "&nbsp;&nbsp;&nbsp;" + x.data[0].sent_time +
-                        "<br/>" + x.data[0].twitter + "<br/>";
-                all_string += "</div>";
-                $("#twitter_insert").prepend(all_string.replace(/[\n\r]/g, "<br />"));     
+                if (data_send.length >0 && data_send.length <= max_cm) {
+                    var all_string = "<div id='list_table'>";
+                    all_string += x.data[0].name + "&nbsp;&nbsp;&nbsp;" + x.data[0].sent_time +
+                            "<br/>" + x.data[0].twitter + "<br/>";
+                    all_string += "</div>";
+                    $("#twitter_insert").prepend(all_string.replace(/[\n\r]/g, "<br />"));     
+                }
             }     
         });
         return false;
