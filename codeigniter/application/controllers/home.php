@@ -8,13 +8,14 @@ class Home extends CI_Controller
         parent::__construct();
         
         $this->load->helper(array('url', 'date', 'form'));
-        $this->load->library(array('form_validation', 'session', 'my_auth', 'my_layout'));
+        $this->load->library(array('form_validation', 'session', 
+                            'my_auth', 'my_layout', 'memcached_library'));
         $this->my_layout->setLayout('home/template');
 
-		if (! $this->my_auth->is_Login()) {
-			redirect(base_url(). 'login');
-			exit();
-		}
+        if (! $this->my_auth->is_Login()) {
+            redirect(base_url(). 'login');
+            exit();
+        }
         $this->load->database();
         $this->load->model('muser');
         $this->load->model('mcomment');
@@ -23,28 +24,46 @@ class Home extends CI_Controller
     //--- Homepage
     public function index()
     {   
-        // Initial array
-        $data = array();
-        // Store offset variable to get limit in database
-    	$array_off = array(
-            'off' => ZERO,
-        );
-        $this->load->vars($array_off);
-        // Get name via user_id
-    	$user = $this->muser->getInfo($this->my_auth->user_id);
-        $data['name'] = $user['name'];
-        $data['all_record'] = $this->mcomment->num_rows();
-        $data['data'] = $this->mcomment->getalldata(ZERO,MAX_ROWS);
-        $this->my_layout->view('home/comment', $data);     
+        $userid = $this->my_auth->user_id;
+        $key_id = 'user'.$userid;
+        // Lets try to get the key 
+        $results = $this->memcached_library->get($key_id);
+        if (! $results) {
+             $query = $this->mcomment->getalldata($userid, ZERO, MAX_ROWS);
+            // Lets store the results
+            $this->memcached_library->set($key_id, $query, null);
+            $num_rows = $this->mcomment->num_rows_id($userid);
+            $this->memcached_library->set('num', $num_rows, null);
+            // Initial array
+            $data = array();
+            // Store offset variable to get limit in database
+            $array_off = array(
+                'off' => ZERO,
+            );
+            $this->load->vars($array_off);
+            // Get name via user_id
+            $user = $this->muser->getInfo($userid);
+            $data['name'] = $user['name'];
+            $data['all_record'] = $num_rows;
+            $data['data'] = $query;    
+        } else {
+            // second times is loaded
+            $query = $this->memcached_library->get($key_id);
+            // Get name via user_id
+            $user = $this->muser->getInfo($userid);
+            $data['name'] = $user['name'];
+            $data['all_record'] = $this->memcached_library->get('num');
+            $data['data'] = $query;
+        }
+        $this->my_layout->view('home/comment', $data);
     }
     
     public function save()
     {
         $this->load->helpers(array('form'));
-        // thay request bang post, check data_send rong , vuot qua 200 chu thi thong bao loi
         $data_send =  $_POST['data_send'];
         $status = "ok";
-        if (strlen($data_send) == 1 || strlen($data_send) > 200) {
+        if (strlen($data_send) == 1 || strlen($data_send) > MAX_CM) {
             $status = "error";
         } else {
             $add = array(
@@ -56,8 +75,9 @@ class Home extends CI_Controller
             // Save data_send into database
             $this->mcomment->addComment($add);
         } 
+        $userid = $this->my_auth->user_id;
         $data = array();
-        $data['data'] = $this->mcomment->getalldata(ZERO,MAX_ROWS);
+        $data['data'] = $this->mcomment->getalldata($userid, ZERO, MAX_ROWS);
         $data['status'] = $status;
         $this->output
             ->set_content_type('application/json')
@@ -70,15 +90,17 @@ class Home extends CI_Controller
         $data = array();
         // Get current offset to get data from database
         $current_off = $this->load->get_var('off') + MAX_ROWS;
-        $data['data'] = $this->mcomment->getalldata($current_off, MAX_ROWS);
+        $data['curr_off'] = $current_off;
+        $userid = $this->my_auth->user_id;
+        $data['data'] = $this->mcomment->getalldata($userid, $current_off, MAX_ROWS);
         // Store new offset value 
         $array_off = array(
             'off' => $current_off,
         );
         $this->load->vars($array_off);
         // Send data which loaded from database to view in json format
-		$this->output
-    		->set_content_type('application/json')
-    		->set_output(json_encode($data));
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($data));
     }
 }

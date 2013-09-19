@@ -11,17 +11,18 @@ class mcomment extends CI_Model
     }
 
     //--- Get all data
-    public function getalldata($off = "", $limit = "")
+    public function getalldata($user_id, $off = "", $limit = "")
     {
         $this->db->select(STAR);
         $this->db->from($this->_table);
+        $this->db->where('comment.user_id', $user_id);
         $this->db->join('user', 'comment.user_id = user.user_id');
         $this->db->order_by('sent_time', 'desc');
         $this->db->limit($limit, $off);
         $query = $this->db->get();
         return $query->result_array();
     }
-    
+
     //--- Get an information by comment_id
     public function getInfo($id)
     {
@@ -42,6 +43,14 @@ class mcomment extends CI_Model
         } else {
             return false;
         }
+    }
+
+    //--- Sum of record by user_id
+    public function num_rows_id($id)
+    {
+        $this->db->where("user_id", $id);
+        $query = $this->db->get($this->_table);
+        return $query->num_rows();
     }
 
     //--- Sum of record

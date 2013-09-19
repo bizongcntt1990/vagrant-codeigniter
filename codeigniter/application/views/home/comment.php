@@ -16,6 +16,8 @@
   <script type="text/javascript">
   var click_sent = 0;
   var click_continue = 1;
+  var max_rows = Number("<?php echo MAX_ROWS; ?>");
+  var max_cm = Number("<?php echo MAX_CM; ?>");
   $(document).ready(function(){
     auto_check_button();
 
@@ -23,11 +25,6 @@
     e.preventDefault();
     click_sent++;
     var all_curr_record = click_sent + Number("<?php echo $all_record; ?>");
-    if ( all_curr_record <= click_continue*10 ){
-        $("#ok").hide('fast');
-    } else {
-        $("#ok").show();
-    } 
     var data_send = $("#comment_area").val();    
 
      $.ajax({   
@@ -36,9 +33,9 @@
         data : "data_send= " + data_send,
         dataType: "json",
         beforeSend:function(){
-            if (data_send.length ===0) {
+            if (data_send.length ==0) {
                 alert(" Server| Data_send is null");
-            } else if (data_send.length > 200) {
+            } else if (data_send.length > max_cm) {
                 alert(" Server| Data_send is more than 200");
             }
         },
@@ -62,7 +59,7 @@
     $("#continue").click(function(){ 
     click_continue++;
     var all_curr_record = click_sent + Number("<?php echo $all_record; ?>");
-    if ( all_curr_record < click_continue*10 ){
+    if ( all_curr_record < click_continue*max_rows ){
         $("#continue").hide('fast');
     }
     $.ajax({
@@ -70,7 +67,8 @@
         url : "home/get", // get comment
         data: "", //
         dataType: "json", 
-        success:function(x){ 
+        success:function(x){
+             
             var all_string = "<div id='box_display'>";
             $.each(x.data, function(index, value) {
                 all_string += "<div id='list_table'>"; 
@@ -86,7 +84,7 @@
     function auto_check_button()
     {
         var all_curr_record = Number("<?php echo $all_record; ?>");
-        if (all_curr_record <= 10) {
+        if (all_curr_record <= max_rows) {
             $("#continue").hide('fast');
         } else {
             $("#continue").show();
