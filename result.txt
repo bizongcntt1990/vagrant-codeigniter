@@ -1,0 +1,13 @@
+/example_memcached/test 204
+/home 45
+/example_memcached/stats 13
+/home/save 12
+/test_memcached/ 11
+/home/get 7
+/verify/login 4
+/login 4
+/test_memcached/index2.php 3
+/test_memcached/index3.php 2
+/example_memcached/ 2
+/ 2
+/test_memcached 1
