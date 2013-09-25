@@ -6,17 +6,16 @@ if (! defined('BASEPATH'))
 class MY_Email extends CI_Email 
 {
 
-     //var $CI;
-    private $CI = null;
+    private $ci = null;
     private $_mail = null;
      
     public function __construct()
     {
         parent::__construct();
-        $this->CI =& get_instance(); 
+        $this->ci =& get_instance(); 
     }
      
-    private function config($data)
+    public function config($data)
     {
         $this->_mail = array(
                             'from_sender'       => 'Realworld Company',

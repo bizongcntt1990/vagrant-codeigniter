@@ -5,6 +5,7 @@ run_list(
   "yum::remi",
   "ntp",
   "postfix",
+  "memcached",
   "vagrant-codeigniter::db",
   "vagrant-codeigniter::web",
   "vagrant-codeigniter::php"

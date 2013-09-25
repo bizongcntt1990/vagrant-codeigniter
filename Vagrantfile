@@ -11,7 +11,7 @@ Vagrant::Config.run do |config|
     chef.add_role "vagrant-codeigniter"
     chef.json.merge!({
         :mysql55 => {
-          :version => '5.5.33-1.el5.remi',
+          :version => '5.5.34-1.el5.remi',
         },
         :mysql => {
           :database_name => 'codeigniter',

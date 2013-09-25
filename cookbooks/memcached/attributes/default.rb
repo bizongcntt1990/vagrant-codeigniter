@@ -1,0 +1,9 @@
+# General settings
+default['memcached']['memory'] = 1024
+default['memcached']['port'] = 11211
+default['memcached']['listen'] = "127.0.0.1"
+default['memcached']['maxconn'] = 1024
+default['memcached']['max_object_size'] = "1m"
+default['memcached']['logfilename'] = "memcached.log"
+default['memcached']['user'] = 'memcache'
+default['memcached']['group'] = 'memcache'

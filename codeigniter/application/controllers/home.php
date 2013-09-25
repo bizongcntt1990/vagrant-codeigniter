@@ -88,8 +88,8 @@ class Home extends CI_Controller
     public function get()
     {    
         $this->load->helpers(array('form'));
-        $data_send =  $_POST['num_click'];
-        $asc = $_POST['asc'];
+        $data_send =  $this->input->post('num_click');
+        $asc = $this->input->post('asc');
         $current_off = ($data_send-1)*$this->my_const['max_rows'] + $asc;
         $data = array();
         // Get current offset to get data from database
